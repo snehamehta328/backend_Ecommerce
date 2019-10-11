@@ -25,16 +25,6 @@ public class UserService {
         return id;
     }
 
-//    public Long getUserRole(Principal principal) {
-//        return u.findByUsername(principal.getName()).get().getRole().getRoleId();
-//    }
-//
-//    public ResponseEntity<?> checkDetails(users user, Principal principal) {
-//        Optional<users> usercheck = u.findByUsername(principal.getName());
-//        Optional<users> usercheckinfo = u.findByUsername(user.getUsername());
-//        if (usercheckinfo.isPresent() & usercheckinfo.get().getUsername() != usercheck.get().getUsername()) ;
-//        HttpHeaders responseHeaders = new HttpHeaders();
-//    }
 public Optional<users> getUserProfile(Principal principal)
 {
     return u.findByUsername(principal.getName());

@@ -28,20 +28,7 @@ public class cartController {
     }
 
 
-    //    @RequestMapping(value="/removeproduct/recieve/{product_id}", method = RequestMethod.GET)
-//    @ResponseBody
-//    public cart removeproduct(@PathVariable Long productid, Principal principal)
-//    {
-//        return (cart) cartService.removeproduct(productid,principal);
-//    }
-//
-//
-//    @RequestMapping(value="/addproduct/recieve/{product_id}", method = RequestMethod.GET)
-//    @ResponseBody
-//    public cart addproduct(@PathVariable Long productid, Principal principal)
-//    {
-//        return (cart) cartService.addProduct(productid,principal);
-//    }
+
     @RequestMapping(value = "/removeproduct/recieve/{product_id}", method = RequestMethod.GET)
     @ResponseBody
     public cart removeproduct(@PathVariable Long product_id, Principal principal) {
@@ -54,24 +41,16 @@ public class cartController {
         return cartService.addProduct(userService.getUserId(principal), product_id);
     }
 
-    ////
-////        @RequestMapping(value = "/addtocart/recieve/{productid}", method = RequestMethod.GET)
-////        @ResponseBody
-
-////        public String addtocart (@PathVariable Long productid, Principal principal){
-////            return s.addtocart(currentUserService.getuserid(principal), productid);
-////        }
-////
-////        @RequestMapping(value = "/removefromcart/recieve/{productid}", method = RequestMethod.GET)
-////        @ResponseBody
-////        public String removefromcart (@PathVariable Long productid, Principal principal){
-////            return s.removefromcart(currentUserService.getuserid(principal), productid);
-////        }
-////
-    @RequestMapping(value = "/showcart/recieve/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/showcart/recieve", method = RequestMethod.GET)
     @ResponseBody
-    public List<cart> showcart(@PathVariable Long userId) {
-        return cartService.showCart(userId);
+    public List<cart> showcart(Principal principal) {
+        return cartService.showCart(userService.getUserId(principal),principal);
+    }
+    @RequestMapping(value="/clearcart", method = RequestMethod.GET)
+    @ResponseBody
+    public  String clearCart(Principal principal)
+    {
+        return cartService.clearCart(userService.getUserId(principal),principal);
     }
 }
 //}

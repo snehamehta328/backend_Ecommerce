@@ -23,47 +23,7 @@ public class cartService {
     private userRepository userRepository;
     private orderHistoryRepository orderHistoryRepository;
 
-//    public List<Cart> addProduct(Long productid, Principal principal)
-//    {
-//        Users users = userRepository.findByusername(principal.getName()).get();
-//        Products products = productRepoistory.findById(productid).get();
-//        if(cartRepository.findByUserandProducts(users,products).isPresent()) {
-//            Cart cart = cartRepository.findByUserandProducts(users, products).get();
-//            cart.setQuantity(cart.getQuantity() + 1);
-//            cartRepository.save(cart);
-//        } else {
-//            Cart cart = new Cart();
-//            cart.setQuantity(1);
-//            cart.setUser(users);
-//            cart.setItems(products);
-//            cartRepository.save(cart);
-//        }
-//        return cartRepository.findAllByUsers(users);
-//    }
-//
-//    public List<cart> removeProduct(Long productid, Principal principal) {
-//        users users = userRepository.findByUsername(principal.getName()).get();
-//        Products products = productRepository.findById(productid).get();
-//        cart cart = cartRepository.findByUserAndProducts(users,products).get();
-//        cartRepository.delete(cart);
-//        return cartRepository.findAllByUsers(users);
-//    }
 
-//    public String decreseQuantity(Long productid, Principal principal) {
-//        Users users = userRepository.findByUsername(principal.getName()).get();
-//        Products products = productRepoistory.findById(productid).get();
-//        Cart cart =  cartRepository.findByUserandProducts(users,products).get();
-//        if(cart.getQuantity() == 1)
-//        {
-//            return "Quantity can be deceresed further";
-//        }
-//        else
-//        {
-//            cart.setQuantity(cart.getQuantity() - 1);
-//            cartRepository.save(cart);
-//            return "quantity removed";
-//        }
-//    }
 
     public cart addProduct(Long userid, Long productid) {
         Products products = productRepository.findByProductId(productid);
@@ -85,20 +45,11 @@ public class cartService {
         return cartRepository.findByUserAndProducts(users, products).get();
     }
 
-    public List<cart> showCart(Long user_id) {
+    public List<cart> showCart(Long user_id, Principal principal) {
         users user = userRepository.findByUserId(user_id);
-        return cartRepository.findAllByUser(user);
+        return cartRepository.findByUserAndProducts_Active(user,1);
     }
-    //
-////    public String clearCart(Long userId) {
-////
-////        Users user = userRepository.findByUserandProducts_Active(user, 1);
-////        for (Cart cart : cartItems) {
-////            cartRepository.deleteById(cart.getId());
-////        }
-////        return "cart cleared!";
-////    }
-//
+
     public cart removeproduct(Long userid,Long productid) {
         Products products = productRepository.findByProductId(productid);
         users users = userRepository.findByUserId(userid);
@@ -116,19 +67,12 @@ public class cartService {
         }
         return cartRepository.findByUserAndProducts(users,products).get();
     }
-//    public String addtocart(Long userid,Long productid) {
-//        Products products = productRepoistory.findByProductId(productid);
-//        Users users = userRepository.findByUserId(userid);
-//        if(cartRepository.findByUserandProducts(users,products).isPresent()) {
-//            return "This item is already present in your cart";
-//        }
-//        else {
-//            Cart cart = new Cart();
-//            cart.setItems(products);
-//            cart.setUser(users);
-//            cart.setQuantity(1);
-//            cartRepository.save(cart);
-//            return "This item is added to your cart";
-//        }
-//    }
+    public String clearCart(Long userid, Principal principal){
+        users users=userRepository.findByUserId(userid);
+        List<cart> cartList=cartRepository.findAllByUser(users);
+        for(cart cart: cartList){
+                cartRepository.deleteById(cart.getCartId());
+        }
+return "Cart Cleared!!";
+    }
 }
