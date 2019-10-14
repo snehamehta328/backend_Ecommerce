@@ -61,6 +61,12 @@ public class cartController {
     public double checkout(Principal principal){
         return cartService.checkout(userService.getUserId(principal),principal);
     }
+    @RequestMapping(value = "/price", method = RequestMethod.GET)
+    @ResponseBody
+    public double price(Principal principal){
+        return cartService.calPrice(userService.getUserId(principal),principal);
+    }
+
 }
 //}
 

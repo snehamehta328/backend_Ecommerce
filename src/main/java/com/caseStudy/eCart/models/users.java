@@ -19,6 +19,14 @@ public class users implements Serializable
    private int active;
     @Column(name="role")
     private String role;
+    @Column(name="phone")
+    private Long phone;
+    @Column(name="city")
+    private String city;
+    @Column(name="email")
+    private String email;
+    @Column(name="address")
+    private String address;
 
     public long getUserId() {
         return userId;
@@ -58,5 +66,37 @@ public class users implements Serializable
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Long getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Long phone) {
+        this.phone = phone;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

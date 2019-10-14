@@ -19,6 +19,16 @@ public class orderHistory implements Serializable
     private int price;
     @Column(nullable = false)
     LocalDate date;
+@ManyToOne
+private users users;
+
+    public com.caseStudy.eCart.models.users getUsers() {
+        return users;
+    }
+
+    public void setUsers(com.caseStudy.eCart.models.users users) {
+        this.users = users;
+    }
 
     public Long getHid() {
         return hid;

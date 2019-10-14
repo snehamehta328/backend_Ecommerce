@@ -31,6 +31,7 @@ public class cartService {
             cart cartt = cartRepository.findByUserAndProducts(users, products).get();
 
             cartt.setQuantity(cartt.getQuantity() + 1);
+            cartt.setTotal(cartt.getQuantity()*products.getPrice());
 
             cartRepository.save(cartt);
 
@@ -90,6 +91,7 @@ return "Cart Cleared!!";
         {
             orderHistory orderhistory= new orderHistory();
             orderhistory.setProducts(cart.getProducts());
+            orderhistory.setUsers(cart.getUser());
             p=cart.getProducts().getPrice();
             orderhistory.setQuantity(cart.getQuantity());
             total=total+cart.getQuantity()*p;
@@ -99,5 +101,21 @@ return "Cart Cleared!!";
         }
         //clearCart(userid,principal);
         return total;
+    }
+    public List<orderHistory> showorderhistory(Long userid,Principal principal)
+    {
+        users users=userRepository.findByUserId(userid);
+        return orderHistoryRepository.findAllByUsers(users);
+    }
+
+    public double calPrice(Long userid,Principal principal)
+    {
+        users users=userRepository.findByUserId(userid);
+        List<cart> cartList=cartRepository.findAllByUser(users);
+        double q=0;
+        for(cart cart: cartList){
+            q=q+cart.getTotal();
+        }
+        return q;
     }
 }

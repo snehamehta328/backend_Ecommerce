@@ -15,6 +15,11 @@ public class cart implements Serializable
     private users user;
 @Column(name="quantity")
     private int quantity;
+
+
+
+    @Column(name="total")
+private double total;
 public cart()
 {
 
@@ -56,5 +61,13 @@ public cart()
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 }

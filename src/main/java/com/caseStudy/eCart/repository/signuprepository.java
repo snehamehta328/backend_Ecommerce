@@ -12,5 +12,5 @@ public interface signuprepository extends JpaRepository<users, Long>
 {
     @Override
     List<users> findAll();
-    Optional<users> findByUsername(String username);
+// Optional<users> findByUsername(String username);
 }
