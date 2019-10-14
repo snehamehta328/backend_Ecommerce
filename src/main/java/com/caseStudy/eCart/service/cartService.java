@@ -1,9 +1,6 @@
 package com.caseStudy.eCart.service;
 
-import com.caseStudy.eCart.models.Products;
-import com.caseStudy.eCart.models.cart;
-import com.caseStudy.eCart.models.fixedCart;
-import com.caseStudy.eCart.models.users;
+import com.caseStudy.eCart.models.*;
 import com.caseStudy.eCart.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +18,7 @@ public class cartService {
     private cartRepository cartRepository;
     @Autowired
     private userRepository userRepository;
+    @Autowired
     private orderHistoryRepository orderHistoryRepository;
 
 
@@ -50,22 +48,20 @@ public class cartService {
         return cartRepository.findByUserAndProducts_Active(user,1);
     }
 
-    public cart removeproduct(Long userid,Long productid) {
+    public Optional<cart> removeproduct(Long userid,Long productid) {
         Products products = productRepository.findByProductId(productid);
         users users = userRepository.findByUserId(userid);
 
-        if(cartRepository.findByUserAndProducts(users,products).get().getQuantity() == 1) {
+        if(cartRepository.findByUserAndProducts(users,products).get().getQuantity() <= 1) {
             cart cart = cartRepository.findByUserAndProducts(users,products).get();
-            cart.setQuantity(0);
-            cartRepository.save(cart);
+            cartRepository.delete(cart);
         }
-        else if(cartRepository.findByUserAndProducts(users,products).get().getQuantity() > 1) {
+        else  {
             cart cart = cartRepository.findByUserAndProducts(users,products).get();
-
             cart.setQuantity(cart.getQuantity() - 1);
             cartRepository.save(cart);
         }
-        return cartRepository.findByUserAndProducts(users,products).get();
+        return cartRepository.findByUserAndProducts(users,products);
     }
     public String clearCart(Long userid, Principal principal){
         users users=userRepository.findByUserId(userid);
@@ -74,5 +70,34 @@ public class cartService {
                 cartRepository.deleteById(cart.getCartId());
         }
 return "Cart Cleared!!";
+    }
+    public Optional<cart> deleteproduct(Long userid, Long productid)
+    {
+        Products products=productRepository.findByProductId(productid);
+        users users=userRepository.findByUserId(userid);
+        cart cart=cartRepository.findByUserAndProducts(users,products).get();
+        cartRepository.delete(cart);
+        return cartRepository.findByUserAndProducts(users,products);
+    }
+
+    public double checkout(Long userid, Principal principal)
+    {
+        users users=userRepository.findByUserId(userid);
+        double p;
+        double total=0;
+        List<cart> cartList=cartRepository.findAllByUser(users);
+        for(cart cart:cartList)
+        {
+            orderHistory orderhistory= new orderHistory();
+            orderhistory.setProducts(cart.getProducts());
+            p=cart.getProducts().getPrice();
+            orderhistory.setQuantity(cart.getQuantity());
+            total=total+cart.getQuantity()*p;
+            orderhistory.setPrice((int)(cart.getQuantity()*p));
+            orderhistory.setDate();
+            orderHistoryRepository.save(orderhistory);
+        }
+        //clearCart(userid,principal);
+        return total;
     }
 }
