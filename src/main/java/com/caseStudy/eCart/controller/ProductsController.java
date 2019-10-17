@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.hibernate.HibernateException;
 import javax.validation.Valid;
 import java.util.List;
-@CrossOrigin(origins="http://localhost:4200",methods={RequestMethod.DELETE, RequestMethod.GET,RequestMethod.POST})
+
+@CrossOrigin(origins="http://localhost:4200",methods={RequestMethod.DELETE, RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT})
 @RestController
 @RequestMapping("/api")
 public class ProductsController
@@ -57,41 +58,39 @@ public List<Products> getProductsByPrice(@PathVariable(value="price1")Double pro
 {
         return p.findAllByCategory(product_category);
 }
-@PutMapping("/updateProduct/{id}")
-    public Products updateProduct(@PathVariable(value="id") Long productId,
-                                  @Valid @RequestBody Products productDetails) {
-        Products product= p.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Products","id",productId));
-        product.setProductId(productDetails.getProductId());
-        product.setName(productDetails.getName());
-        product.setCategory(productDetails.getCategory());
-        product.setDetails(productDetails.getDetails());
-        product.setImage(productDetails.getImage());
-        product.setSubcategory(productDetails.getSubcategory());
-        product.setPrice(productDetails.getPrice());
-        product.setActive(productDetails.getActive());
-
-         Products updatedProduct=p.save(product);
-         return updatedProduct;
-    }
-@PutMapping("/notes/{id}")
+//@PutMapping("/Productss/{id}")
+//    public Products updateProduct(@PathVariable(value="id") Long productId,
+//                                  @Valid @RequestBody Products productDetails) {
+//        Products product= p.findById(productId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Products","id",productId));
+//        product.setProductId(productDetails.getProductId());
+//        product.setName(productDetails.getName());
+//        product.setCategory(productDetails.getCategory());
+//        product.setDetails(productDetails.getDetails());
+//        product.setImage(productDetails.getImage());
+//        product.setSubcategory(productDetails.getSubcategory());
+//        product.setPrice(productDetails.getPrice());
+//        product.setActive(productDetails.getActive());
+//
+//         Products updatedProduct=p.save(product);
+//         return updatedProduct;
+//    }
+@PutMapping("/produc/{id}")
 public Products updateNote(@PathVariable(value = "id") Long noteId,
                        @Valid @RequestBody Products noteDetails) {
     Products note = p.findById(noteId)
             .orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
     note.setName(noteDetails.getName());
-    note.setProductId(noteDetails.getProductId());
+//    note.setProductId(noteDetails.getProductId());
     note.setCategory(noteDetails.getCategory());
     note.setSubcategory(noteDetails.getSubcategory());
     note.setDetails(noteDetails.getDetails());
     note.setImage(noteDetails.getImage());
     note.setPrice(noteDetails.getPrice());
-    note.setActive((int) noteDetails.getPrice());
-
+    note.setActive(noteDetails.getActive());
 
     Products updatedNote = p.save(note);
     return updatedNote;
 }
-
-
 }
+
